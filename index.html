@@ -8,7 +8,14 @@
   <title>Calculadora de Aguinaldo, IVA y Sueldo Neto en Paraguay (2026)</title>
   <meta name="description" content="Calculá gratis tu aguinaldo, el IVA del 10% y 5%, y tu sueldo neto con descuento de IPS en Paraguay. Resultados al instante en guaraníes.">
   <meta name="keywords" content="calculadora aguinaldo paraguay, calcular iva paraguay, sueldo neto ips paraguay, aguinaldo 2026">
-  <link rel="canonical" href="https://TU-DOMINIO.com/">
+  <link rel="canonical" href="https://calculadorapy.com/">
+
+  <!-- ===== Vista previa al compartir por WhatsApp o Facebook ===== -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://calculadorapy.com/">
+  <meta property="og:title" content="Calculá tu aguinaldo, IVA y sueldo neto en Paraguay">
+  <meta property="og:description" content="Gratis y al instante, en guaraníes. Sin registrarte.">
+  <meta property="og:locale" content="es_PY">
 
   <!-- ===== ADSENSE: cuando Google te apruebe, pegá acá el script que te dan =====
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX" crossorigin="anonymous"></script>
@@ -102,7 +109,9 @@
       overflow-wrap: anywhere;
     }
     .billete .detalle { font-size: .95rem; opacity: .9; margin-top: 1rem; }
-    .billete .detalle div { display: flex; justify-content: space-between; gap: 1rem; }
+    .billete .detalle div { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+    /* El monto nunca se corta en dos líneas: "Gs." y el número quedan juntos */
+    .billete .detalle span:last-child { white-space: nowrap; font-variant-numeric: tabular-nums; }
 
     /* ===== Espacios reservados para anuncios ===== */
     .anuncio {
@@ -249,7 +258,7 @@
   <footer>
     <p>Los cálculos son orientativos y no reemplazan asesoramiento profesional.</p>
     <!-- AdSense exige una página de política de privacidad: creá privacidad.html y enlazala acá -->
-    <p><a href="privacidad.html">Política de privacidad</a> · <a href="mailto:TU-CORREO@gmail.com">Contacto</a></p>
+    <p><a href="privacidad.html">Política de privacidad</a> · <a href="mailto:calculadorapy@gmail.com">Contacto</a></p>
   </footer>
 </div>
 
