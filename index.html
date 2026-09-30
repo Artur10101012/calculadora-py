@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es-PY">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <!-- ===== SEO: esto es lo que Google muestra en los resultados ===== -->
+  <title>Calculadora de Aguinaldo, IVA y Sueldo Neto en Paraguay (2026)</title>
+  <meta name="description" content="Calculá gratis tu aguinaldo, el IVA del 10% y 5%, y tu sueldo neto con descuento de IPS en Paraguay. Resultados al instante en guaraníes.">
+  <meta name="keywords" content="calculadora aguinaldo paraguay, calcular iva paraguay, sueldo neto ips paraguay, aguinaldo 2026">
+  <link rel="canonical" href="https://TU-DOMINIO.com/">
+
+  <!-- ===== ADSENSE: cuando Google te apruebe, pegá acá el script que te dan =====
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX" crossorigin="anonymous"></script>
+  -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== Paleta inspirada en los billetes de guaraníes ===== */
+    :root {
+      --papel: #F6F8F5;
+      --tinta: #1B1F1D;
+      --verde-billete: #123C2F;
+      --verde-claro: #DDEFE6;
+      --ambar: #E0A21B;
+      --gris: #5B6B63;
+      --borde: #C9D6CF;
+      --panel: #FFFFFF;
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --papel: #101714; --tinta: #E8EFEB; --verde-billete: #9FD8BD;
+        --verde-claro: #1C2B25; --gris: #9AAAA2; --borde: #2E3D36; --panel: #16201C;
+      }
+    }
+    :root[data-theme="dark"] {
+      --papel: #101714; --tinta: #E8EFEB; --verde-billete: #9FD8BD;
+      --verde-claro: #1C2B25; --gris: #9AAAA2; --borde: #2E3D36; --panel: #16201C;
+    }
+    *, *::before, *::after { box-sizing: inherit; }
+    html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+    body {
+      margin: 0; background: var(--papel); color: var(--tinta);
+      font: 1.0625rem/1.6 "Atkinson Hyperlegible", system-ui, sans-serif;
+    }
+    .contenedor { max-width: 60rem; margin: 0 auto; padding: 0 1.25rem; }
+
+    header { padding: 2.5rem 0 1.5rem; }
+    h1 {
+      font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 800;
+      font-size: clamp(2rem, 5vw, 3.25rem); line-height: 1.05; margin: 0 0 .75rem;
+      color: var(--verde-billete); max-width: 18ch;
+    }
+    header p { margin: 0; color: var(--gris); max-width: 55ch; }
+
+    /* ===== Pestañas para elegir la calculadora ===== */
+    .pestanas { display: flex; gap: .5rem; flex-wrap: wrap; margin: 1.5rem 0 0; }
+    .pestanas button {
+      font: inherit; font-weight: 700; padding: .6rem 1.1rem; border-radius: 999px;
+      border: 2px solid var(--verde-billete); background: transparent;
+      color: var(--verde-billete); cursor: pointer;
+    }
+    .pestanas button[aria-selected="true"] { background: var(--verde-billete); color: var(--papel); }
+
+    /* ===== Calculadora: formulario a la izquierda, resultado tipo "billete" a la derecha ===== */
+    .calc {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+      background: var(--panel); border: 1px solid var(--borde); border-radius: 1.25rem;
+      padding: 1.5rem; margin-top: 1rem;
+    }
+    .calc[hidden] { display: none; }
+    label { display: block; font-weight: 700; margin: 0 0 .3rem; }
+    .ayuda { display: block; font-size: .875rem; color: var(--gris); margin-bottom: .4rem; }
+    input, select {
+      width: 100%; font: inherit; padding: .7rem .8rem; border-radius: .6rem;
+      border: 1px solid var(--borde); background: var(--papel); color: var(--tinta);
+      margin-bottom: 1rem;
+    }
+    input:focus-visible, select:focus-visible, button:focus-visible {
+      outline: 3px solid var(--ambar); outline-offset: 2px;
+    }
+
+    .billete {
+      background: var(--verde-billete); color: var(--papel); border-radius: 1rem;
+      padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;
+      position: relative; overflow: hidden;
+    }
+    /* Guarda decorativa como en los bordes de un billete */
+    .billete::after {
+      content: ""; position: absolute; inset: .5rem; border: 1px dashed currentColor;
+      border-radius: .7rem; opacity: .35; pointer-events: none;
+    }
+    .billete .monto {
+      font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 800;
+      font-size: clamp(2rem, 6vw, 3rem); line-height: 1; font-variant-numeric: tabular-nums;
+      overflow-wrap: anywhere;
+    }
+    .billete .detalle { font-size: .95rem; opacity: .9; margin-top: 1rem; }
+    .billete .detalle div { display: flex; justify-content: space-between; gap: 1rem; }
+
+    /* ===== Espacios reservados para anuncios ===== */
+    .anuncio {
+      margin: 2rem 0; min-height: 90px; border: 1px dashed var(--borde); border-radius: .75rem;
+      display: grid; place-items: center; color: var(--gris); font-size: .875rem;
+    }
+
+    /* ===== Texto explicativo: Google necesita contenido para aprobar AdSense ===== */
+    article h2 {
+      font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 600;
+      color: var(--verde-billete); font-size: 1.5rem; margin: 2.5rem 0 .5rem;
+    }
+    article p { max-width: 68ch; }
+    details { border-bottom: 1px solid var(--borde); padding: .8rem 0; }
+    summary { font-weight: 700; cursor: pointer; }
+
+    footer { margin: 3rem 0 2rem; font-size: .875rem; color: var(--gris); }
+    footer a { color: var(--verde-billete); }
+
+    @media (max-width: 700px) { .calc { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<div class="contenedor">
+
+  <header>
+    <h1>Calculadoras de plata para Paraguay</h1>
+    <p>Aguinaldo, IVA y sueldo neto en guaraníes. Poné tus números y el resultado aparece al instante. Gratis y sin registrarte.</p>
+
+    <div class="pestanas" role="tablist">
+      <button role="tab" aria-selected="true" data-calc="aguinaldo">Aguinaldo</button>
+      <button role="tab" aria-selected="false" data-calc="iva">IVA</button>
+      <button role="tab" aria-selected="false" data-calc="neto">Sueldo neto</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== 1. CALCULADORA DE AGUINALDO ===== -->
+    <section class="calc" id="aguinaldo">
+      <div>
+        <label for="ag-sueldo">Sueldo mensual</label>
+        <input id="ag-sueldo" inputmode="numeric" placeholder="3.000.000">
+
+        <label for="ag-meses">Meses trabajados este año</label>
+        <select id="ag-meses"></select>
+
+        <label for="ag-extras">Extras cobrados en el año</label>
+        <span class="ayuda">Horas extra, comisiones o bonos. Dejalo vacío si no tuviste.</span>
+        <input id="ag-extras" inputmode="numeric" placeholder="0">
+      </div>
+      <div class="billete" aria-live="polite">
+        <div>
+          <div>Tu aguinaldo</div>
+          <div class="monto" id="ag-resultado">Gs. 0</div>
+        </div>
+        <div class="detalle">
+          <div><span>Total ganado en el año</span><span id="ag-total">Gs. 0</span></div>
+          <div><span>Dividido entre</span><span>12</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 2. CALCULADORA DE IVA ===== -->
+    <section class="calc" id="iva" hidden>
+      <div>
+        <label for="iva-monto">Monto</label>
+        <input id="iva-monto" inputmode="numeric" placeholder="110.000">
+
+        <label for="iva-tasa">Tasa de IVA</label>
+        <select id="iva-tasa">
+          <option value="10">10% (la mayoría de bienes y servicios)</option>
+          <option value="5">5% (canasta básica, medicamentos, alquileres)</option>
+        </select>
+
+        <label for="iva-modo">El monto que pusiste</label>
+        <select id="iva-modo">
+          <option value="incluido">Ya incluye IVA (quiero saber cuánto es)</option>
+          <option value="agregar">No incluye IVA (quiero sumarlo)</option>
+        </select>
+      </div>
+      <div class="billete" aria-live="polite">
+        <div>
+          <div>IVA</div>
+          <div class="monto" id="iva-resultado">Gs. 0</div>
+        </div>
+        <div class="detalle">
+          <div><span>Precio sin IVA</span><span id="iva-base">Gs. 0</span></div>
+          <div><span>Precio con IVA</span><span id="iva-total">Gs. 0</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 3. CALCULADORA DE SUELDO NETO (descuento IPS) ===== -->
+    <section class="calc" id="neto" hidden>
+      <div>
+        <label for="neto-bruto">Sueldo bruto mensual</label>
+        <span class="ayuda">Lo que figura en tu contrato, antes de descuentos.</span>
+        <input id="neto-bruto" inputmode="numeric" placeholder="3.000.000">
+      </div>
+      <div class="billete" aria-live="polite">
+        <div>
+          <div>Cobrás en mano</div>
+          <div class="monto" id="neto-resultado">Gs. 0</div>
+        </div>
+        <div class="detalle">
+          <div><span>Aporte IPS del trabajador (9%)</span><span id="neto-ips">Gs. 0</span></div>
+          <div><span>Aporte de tu empleador (16,5%)</span><span id="neto-patronal">Gs. 0</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Espacio para anuncio (reemplazar por el bloque de AdSense) -->
+    <div class="anuncio">Espacio para anuncio</div>
+
+    <!-- ===== CONTENIDO EXPLICATIVO (ayuda al SEO y a la aprobación de AdSense) ===== -->
+    <article>
+      <h2>¿Cómo se calcula el aguinaldo en Paraguay?</h2>
+      <p>El aguinaldo es la doceava parte de todo lo que cobraste durante el año: sueldo, horas extra, comisiones y otros pagos. Se suma todo lo ganado de enero a diciembre y se divide entre 12. Si trabajaste solo una parte del año, igual te corresponde la parte proporcional. El empleador tiene que pagarlo a más tardar el 31 de diciembre.</p>
+
+      <h2>¿Cómo calcular el IVA incluido en un precio?</h2>
+      <p>En Paraguay, los precios al público normalmente ya incluyen el IVA. Para saber cuánto es el impuesto dentro de un precio con IVA del 10%, dividís el total entre 11. Para el 5%, dividís entre 21. Por ejemplo, en una compra de Gs. 110.000 con IVA 10%, el impuesto es Gs. 10.000.</p>
+
+      <h2>¿Cuánto descuenta el IPS del sueldo?</h2>
+      <p>Si trabajás en relación de dependencia, el IPS te descuenta el 9% de tu sueldo bruto. Tu empleador aporta además un 16,5% por su cuenta, que no sale de tu bolsillo. Tu sueldo neto es lo que queda después de restar ese 9%.</p>
+
+      <h2>Preguntas frecuentes</h2>
+      <details>
+        <summary>¿El aguinaldo tiene descuento de IPS?</summary>
+        <p>No. El aguinaldo no tiene descuento de IPS, por eso lo cobrás completo.</p>
+      </details>
+      <details>
+        <summary>¿Si renuncio o me despiden, cobro aguinaldo?</summary>
+        <p>Sí. Te corresponde el aguinaldo proporcional a los meses que trabajaste ese año, y se paga junto con la liquidación.</p>
+      </details>
+      <details>
+        <summary>¿Estos resultados son oficiales?</summary>
+        <p>Son cálculos de referencia basados en las reglas generales. Para casos especiales, consultá con el Ministerio de Trabajo o con un contador.</p>
+      </details>
+    </article>
+
+    <div class="anuncio">Espacio para anuncio</div>
+  </main>
+
+  <footer>
+    <p>Los cálculos son orientativos y no reemplazan asesoramiento profesional.</p>
+    <!-- AdSense exige una página de política de privacidad: creá privacidad.html y enlazala acá -->
+    <p><a href="privacidad.html">Política de privacidad</a> · <a href="mailto:TU-CORREO@gmail.com">Contacto</a></p>
+  </footer>
+</div>
+
+<script>
+  // ===== Utilidades para manejar guaraníes =====
+
+  // Convierte "3.000.000" en el número 3000000 (ignora puntos y letras)
+  function leerGs(input) {
+    return Number(input.value.replace(/\D/g, "")) || 0;
+  }
+
+  // Muestra un número como "Gs. 3.000.000" (el guaraní no usa decimales)
+  const formato = new Intl.NumberFormat("es-PY", { maximumFractionDigits: 0 });
+  function mostrarGs(numero) {
+    return "Gs. " + formato.format(Math.round(numero));
+  }
+
+  // Mientras el usuario escribe, le agrega los puntos de miles
+  function autoFormatear(input) {
+    input.addEventListener("input", () => {
+      const valor = leerGs(input);
+      input.value = valor ? formato.format(valor) : "";
+    });
+  }
+
+  // ===== Pestañas: mostrar una calculadora y ocultar las demás =====
+  document.querySelectorAll(".pestanas button").forEach((boton) => {
+    boton.addEventListener("click", () => {
+      document.querySelectorAll(".pestanas button").forEach((b) => b.setAttribute("aria-selected", "false"));
+      boton.setAttribute("aria-selected", "true");
+      document.querySelectorAll(".calc").forEach((c) => (c.hidden = c.id !== boton.dataset.calc));
+    });
+  });
+
+  // ===== 1. Aguinaldo: (sueldo × meses + extras) / 12 =====
+  const agSueldo = document.getElementById("ag-sueldo");
+  const agMeses = document.getElementById("ag-meses");
+  const agExtras = document.getElementById("ag-extras");
+
+  // Llenar el selector con 1 a 12 meses, con 12 elegido por defecto
+  for (let m = 1; m <= 12; m++) {
+    agMeses.add(new Option(m === 1 ? "1 mes" : m + " meses", m, m === 12, m === 12));
+  }
+
+  function calcularAguinaldo() {
+    const totalAnual = leerGs(agSueldo) * Number(agMeses.value) + leerGs(agExtras);
+    document.getElementById("ag-total").textContent = mostrarGs(totalAnual);
+    document.getElementById("ag-resultado").textContent = mostrarGs(totalAnual / 12);
+  }
+
+  // ===== 2. IVA: incluido = monto × tasa / (100 + tasa); agregar = monto × tasa / 100 =====
+  const ivaMonto = document.getElementById("iva-monto");
+  const ivaTasa = document.getElementById("iva-tasa");
+  const ivaModo = document.getElementById("iva-modo");
+
+  function calcularIVA() {
+    const monto = leerGs(ivaMonto);
+    const tasa = Number(ivaTasa.value);
+    let iva, base, total;
+    if (ivaModo.value === "incluido") {
+      iva = (monto * tasa) / (100 + tasa);
+      total = monto;
+      base = monto - iva;
+    } else {
+      iva = (monto * tasa) / 100;
+      base = monto;
+      total = monto + iva;
+    }
+    document.getElementById("iva-resultado").textContent = mostrarGs(iva);
+    document.getElementById("iva-base").textContent = mostrarGs(base);
+    document.getElementById("iva-total").textContent = mostrarGs(total);
+  }
+
+  // ===== 3. Sueldo neto: bruto − 9% de IPS =====
+  const netoBruto = document.getElementById("neto-bruto");
+
+  function calcularNeto() {
+    const bruto = leerGs(netoBruto);
+    const ips = bruto * 0.09;
+    document.getElementById("neto-ips").textContent = mostrarGs(ips);
+    document.getElementById("neto-patronal").textContent = mostrarGs(bruto * 0.165);
+    document.getElementById("neto-resultado").textContent = mostrarGs(bruto - ips);
+  }
+
+  // ===== Conectar cada campo con su cálculo =====
+  [agSueldo, agExtras, ivaMonto, netoBruto].forEach(autoFormatear);
+  [agSueldo, agMeses, agExtras].forEach((el) => el.addEventListener("input", calcularAguinaldo));
+  [ivaMonto, ivaTasa, ivaModo].forEach((el) => el.addEventListener("input", calcularIVA));
+  netoBruto.addEventListener("input", calcularNeto);
+</script>
+</body>
+</html>
