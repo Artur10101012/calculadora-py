@@ -1,0 +1,6 @@
+# Permite que todos los buscadores revisen el sitio completo
+User-agent: *
+Allow: /
+
+# Ubicación del sitemap
+Sitemap: https://calculadorapy.com/sitemap.xml
