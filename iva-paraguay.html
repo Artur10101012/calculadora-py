@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es-PY">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>IVA en Paraguay: cómo calcular el 10% y el 5% (incluido y agregado)</title>
+  <meta name="description" content="Cómo calcular el IVA en Paraguay: sacar el IVA incluido en un precio, agregar IVA a un monto, diferencia entre la tasa del 10% y del 5%, con ejemplos paso a paso.">
+  <link rel="canonical" href="https://calculadorapy.com/iva-paraguay">
+
+  <!-- ===== Google AdSense (cuenta ca-pub-9381811855445678) ===== -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9381811855445678"
+     crossorigin="anonymous"></script>
+  <!-- ===== Umami: analítica sin cookies ===== -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="2a958994-8a11-45c2-8cab-b1cfe289ad1c"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== Misma paleta que la página principal ===== */
+    :root {
+      --papel: #F6F8F5; --tinta: #1B1F1D; --verde-billete: #123C2F;
+      --gris: #5B6B63; --borde: #C9D6CF; --panel: #FFFFFF;
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --papel: #101714; --tinta: #E8EFEB; --verde-billete: #9FD8BD; --gris: #9AAAA2; --borde: #2E3D36; --panel: #17211D; }
+    }
+    *, *::before, *::after { box-sizing: inherit; }
+    body {
+      margin: 0; background: var(--papel); color: var(--tinta);
+      font: 1.0625rem/1.65 "Atkinson Hyperlegible", system-ui, sans-serif;
+    }
+    .contenedor { max-width: 44rem; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+    nav { display: flex; flex-wrap: wrap; gap: .4rem 1rem; font-size: .95rem; }
+    h1, h2, h3 { font-family: "Bricolage Grotesque", system-ui, sans-serif; color: var(--verde-billete); }
+    h1 { font-weight: 800; font-size: clamp(1.9rem, 5vw, 2.6rem); line-height: 1.1; margin: 1.5rem 0 .5rem; }
+    h2 { font-weight: 600; font-size: 1.35rem; margin: 2.2rem 0 .4rem; }
+    h3 { font-weight: 600; font-size: 1.1rem; margin: 1.5rem 0 .3rem; }
+    a { color: var(--verde-billete); }
+    .fecha { color: var(--gris); margin-top: 0; }
+    .boton {
+      display: inline-block; margin: 1rem 0; padding: .75rem 1.3rem; border-radius: 999px;
+      background: var(--verde-billete); color: var(--papel); font-weight: 700; text-decoration: none;
+    }
+    .ejemplo { background: var(--panel); border: 1px solid var(--borde); border-radius: 1rem; padding: .5rem 1.2rem; margin: 1rem 0; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .95rem; }
+    th, td { text-align: left; padding: .5rem .4rem; border-bottom: 1px solid var(--borde); }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .aviso { color: var(--gris); font-size: .9rem; }
+    footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--borde); color: var(--gris); font-size: .9rem; }
+  </style>
+</head>
+<body>
+<div class="contenedor">
+  <nav aria-label="Navegación principal">
+    <a href="/">Calculadoras</a>
+    <a href="/aguinaldo-paraguay">Aguinaldo</a>
+    <a href="/iva-paraguay">IVA</a>
+    <a href="/sueldo-neto-ips">Sueldo neto</a>
+    <a href="/liquidacion-despido-paraguay">Liquidación</a>
+  </nav>
+
+
+  <h1>IVA en Paraguay: cómo calcularlo paso a paso</h1>
+  <p class="fecha">Actualizado el 25 de noviembre de 2026</p>
+
+  <p>Si tenés un negocio, emitís facturas o simplemente querés saber cuánto impuesto pagás en una compra, necesitás saber calcular el IVA. En esta guía te explicamos las dos tasas que existen en Paraguay y las dos operaciones más comunes: sacar el IVA de un precio y agregarlo.</p>
+
+  <a class="boton" href="/#iva">Calcular el IVA ahora →</a>
+
+  <h2>¿Qué es el IVA?</h2>
+  <p>El Impuesto al Valor Agregado (IVA) es un impuesto que se aplica a la venta de bienes y a la prestación de servicios. Lo paga el consumidor final, pero lo cobra y lo declara el comerciante o prestador del servicio ante la Dirección Nacional de Ingresos Tributarios (DNIT).</p>
+
+  <h2>Las tasas del IVA en Paraguay</h2>
+  <table>
+    <tr><th>Tasa</th><th>Se aplica a</th></tr>
+    <tr><td><strong>10%</strong></td><td>La mayoría de los bienes y servicios: ropa, electrónica, restaurantes, servicios profesionales, etc.</td></tr>
+    <tr><td><strong>5%</strong></td><td>Algunos bienes y servicios específicos, como productos de la canasta familiar, medicamentos y el alquiler de vivienda, entre otros.</td></tr>
+    <tr><td><strong>Exento</strong></td><td>Ciertas operaciones que la ley excluye del impuesto.</td></tr>
+  </table>
+  <p>Ante la duda sobre qué tasa corresponde a un producto, lo más seguro es consultar la normativa vigente de la DNIT o a un contador.</p>
+
+  <h2>Cómo sacar el IVA incluido en un precio</h2>
+  <p>En Paraguay los precios al público casi siempre <strong>ya incluyen el IVA</strong>. Para saber cuánto de ese precio es impuesto, no se calcula el 10% del total (es un error muy común), sino que se divide:</p>
+  <ul>
+    <li><strong>IVA 10%:</strong> dividí el precio total entre <strong>11</strong>.</li>
+    <li><strong>IVA 5%:</strong> dividí el precio total entre <strong>21</strong>.</li>
+  </ul>
+
+  <h3>¿Por qué entre 11 y no el 10%?</h3>
+  <p>Porque el precio total ya es el 110% (el precio sin impuesto más el 10%). Si el precio sin IVA es 100, el total es 110, y el IVA es 10: o sea, 110 dividido entre 11. Con el 5% pasa lo mismo: el total es 105, y 105 dividido entre 21 da 5.</p>
+
+  <div class="ejemplo">
+    <p><strong>Ejemplo con IVA 10%:</strong> compraste algo a Gs. 220.000.</p>
+    <table>
+      <tr><td>IVA incluido (220.000 ÷ 11)</td><td class="num">Gs. 20.000</td></tr>
+      <tr><td>Precio sin IVA (220.000 − 20.000)</td><td class="num">Gs. 200.000</td></tr>
+    </table>
+  </div>
+  <div class="ejemplo">
+    <p><strong>Ejemplo con IVA 5%:</strong> un producto de la canasta familiar a Gs. 105.000.</p>
+    <table>
+      <tr><td>IVA incluido (105.000 ÷ 21)</td><td class="num">Gs. 5.000</td></tr>
+      <tr><td>Precio sin IVA</td><td class="num">Gs. 100.000</td></tr>
+    </table>
+  </div>
+
+  <h2>Cómo agregar el IVA a un precio</h2>
+  <p>Si tenés un precio <strong>sin impuesto</strong> (por ejemplo, el costo de un servicio que vas a facturar) y querés saber el precio final:</p>
+  <ul>
+    <li><strong>IVA 10%:</strong> multiplicá por 1,10.</li>
+    <li><strong>IVA 5%:</strong> multiplicá por 1,05.</li>
+  </ul>
+  <div class="ejemplo">
+    <p>Un diseñador cobra Gs. 150.000 por un logo y tiene que agregar el IVA del 10%.</p>
+    <table>
+      <tr><td>Precio sin IVA</td><td class="num">Gs. 150.000</td></tr>
+      <tr><td>IVA (150.000 × 10%)</td><td class="num">Gs. 15.000</td></tr>
+      <tr><td>Precio final (150.000 × 1,10)</td><td class="num"><strong>Gs. 165.000</strong></td></tr>
+    </table>
+  </div>
+
+  <h2>¿Para qué sirve saber cuánto IVA pagaste?</h2>
+  <p>Si estás inscripto como contribuyente, el IVA que pagás en tus compras de trabajo (el llamado "IVA crédito") se puede descontar del IVA que cobrás en tus ventas ("IVA débito"). Por eso es importante pedir siempre factura y llevar el registro de cuánto impuesto incluye cada una.</p>
+
+  <a class="boton" href="/#iva">Usar la calculadora de IVA →</a>
+
+  <p class="aviso">Esta guía es informativa. Para tu situación tributaria particular, consultá con un contador o con la DNIT.</p>
+
+
+  <footer>
+    <p><a href="/">Calculadora PY</a> · Calculadoras gratuitas de aguinaldo, IVA, sueldo neto y liquidación para Paraguay.</p>
+    <p><a href="/acerca">Acerca de</a> · <a href="/contacto">Contacto</a> · <a href="/privacidad">Política de privacidad</a></p>
+    <p>Los cálculos y guías son orientativos y no reemplazan el asesoramiento de un profesional.</p>
+  </footer>
+</div>
+</body>
+</html>

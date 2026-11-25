@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es-PY">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sueldo neto en Paraguay: cuánto descuenta el IPS y cómo calcularlo</title>
+  <meta name="description" content="Cómo calcular tu sueldo neto en Paraguay: el descuento del 9% del IPS, el aporte del 16,5% del empleador, cuánto cuesta un empleado y ejemplos con el salario mínimo.">
+  <link rel="canonical" href="https://calculadorapy.com/sueldo-neto-ips">
+
+  <!-- ===== Google AdSense (cuenta ca-pub-9381811855445678) ===== -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9381811855445678"
+     crossorigin="anonymous"></script>
+  <!-- ===== Umami: analítica sin cookies ===== -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="2a958994-8a11-45c2-8cab-b1cfe289ad1c"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== Misma paleta que la página principal ===== */
+    :root {
+      --papel: #F6F8F5; --tinta: #1B1F1D; --verde-billete: #123C2F;
+      --gris: #5B6B63; --borde: #C9D6CF; --panel: #FFFFFF;
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --papel: #101714; --tinta: #E8EFEB; --verde-billete: #9FD8BD; --gris: #9AAAA2; --borde: #2E3D36; --panel: #17211D; }
+    }
+    *, *::before, *::after { box-sizing: inherit; }
+    body {
+      margin: 0; background: var(--papel); color: var(--tinta);
+      font: 1.0625rem/1.65 "Atkinson Hyperlegible", system-ui, sans-serif;
+    }
+    .contenedor { max-width: 44rem; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+    nav { display: flex; flex-wrap: wrap; gap: .4rem 1rem; font-size: .95rem; }
+    h1, h2, h3 { font-family: "Bricolage Grotesque", system-ui, sans-serif; color: var(--verde-billete); }
+    h1 { font-weight: 800; font-size: clamp(1.9rem, 5vw, 2.6rem); line-height: 1.1; margin: 1.5rem 0 .5rem; }
+    h2 { font-weight: 600; font-size: 1.35rem; margin: 2.2rem 0 .4rem; }
+    h3 { font-weight: 600; font-size: 1.1rem; margin: 1.5rem 0 .3rem; }
+    a { color: var(--verde-billete); }
+    .fecha { color: var(--gris); margin-top: 0; }
+    .boton {
+      display: inline-block; margin: 1rem 0; padding: .75rem 1.3rem; border-radius: 999px;
+      background: var(--verde-billete); color: var(--papel); font-weight: 700; text-decoration: none;
+    }
+    .ejemplo { background: var(--panel); border: 1px solid var(--borde); border-radius: 1rem; padding: .5rem 1.2rem; margin: 1rem 0; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .95rem; }
+    th, td { text-align: left; padding: .5rem .4rem; border-bottom: 1px solid var(--borde); }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .aviso { color: var(--gris); font-size: .9rem; }
+    footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--borde); color: var(--gris); font-size: .9rem; }
+  </style>
+</head>
+<body>
+<div class="contenedor">
+  <nav aria-label="Navegación principal">
+    <a href="/">Calculadoras</a>
+    <a href="/aguinaldo-paraguay">Aguinaldo</a>
+    <a href="/iva-paraguay">IVA</a>
+    <a href="/sueldo-neto-ips">Sueldo neto</a>
+    <a href="/liquidacion-despido-paraguay">Liquidación</a>
+  </nav>
+
+
+  <h1>Sueldo neto en Paraguay: cuánto te descuenta el IPS</h1>
+  <p class="fecha">Actualizado el 25 de noviembre de 2026</p>
+
+  <p>El sueldo que figura en tu contrato no es el que te llega a la cuenta. La diferencia es el aporte al Instituto de Previsión Social (IPS). En esta guía te explicamos cómo pasar de sueldo bruto a sueldo neto, cuánto aporta tu empleador y cuánto le cuesta realmente un empleado a una empresa.</p>
+
+  <a class="boton" href="/#neto">Calcular mi sueldo neto →</a>
+
+  <h2>Sueldo bruto y sueldo neto</h2>
+  <ul>
+    <li><strong>Sueldo bruto:</strong> el monto acordado en el contrato, antes de cualquier descuento.</li>
+    <li><strong>Sueldo neto (o líquido):</strong> lo que efectivamente cobrás después de los descuentos.</li>
+  </ul>
+
+  <h2>¿Cuánto descuenta el IPS?</h2>
+  <p>A los trabajadores en relación de dependencia se les descuenta el <strong>9% del sueldo bruto</strong> como aporte obrero al IPS. Ese aporte te da cobertura de salud para vos y tu familia, y suma para tu jubilación.</p>
+  <p>Además, el empleador aporta por su cuenta un <strong>16,5%</strong> sobre tu sueldo bruto. Ese monto no sale de tu bolsillo: lo paga la empresa aparte. En total, al IPS ingresa el 25,5% de tu sueldo.</p>
+
+  <h2>La fórmula</h2>
+  <p><strong>Sueldo neto = sueldo bruto − (sueldo bruto × 9%)</strong>, o lo que es lo mismo, sueldo bruto × 0,91.</p>
+
+  <h3>Ejemplo 1: sueldo de Gs. 4.000.000</h3>
+  <div class="ejemplo">
+    <table>
+      <tr><td>Sueldo bruto</td><td class="num">Gs. 4.000.000</td></tr>
+      <tr><td>Descuento IPS (9%)</td><td class="num">− Gs. 360.000</td></tr>
+      <tr><td>Sueldo neto</td><td class="num"><strong>Gs. 3.640.000</strong></td></tr>
+    </table>
+  </div>
+
+  <h3>Ejemplo 2: salario mínimo</h3>
+  <div class="ejemplo">
+    <p>El salario mínimo vigente desde julio de 2026 es de Gs. 3.044.000.</p>
+    <table>
+      <tr><td>Sueldo bruto</td><td class="num">Gs. 3.044.000</td></tr>
+      <tr><td>Descuento IPS (9%)</td><td class="num">− Gs. 273.960</td></tr>
+      <tr><td>Sueldo neto</td><td class="num"><strong>Gs. 2.770.040</strong></td></tr>
+    </table>
+  </div>
+
+  <h2>¿Cuánto le cuesta un empleado al empleador?</h2>
+  <p>Si tenés un negocio y vas a contratar a alguien, el costo mensual no es solo el sueldo. Hay que sumar el aporte patronal al IPS:</p>
+  <div class="ejemplo">
+    <p>Empleado con sueldo bruto de Gs. 4.000.000:</p>
+    <table>
+      <tr><td>Sueldo bruto</td><td class="num">Gs. 4.000.000</td></tr>
+      <tr><td>Aporte patronal IPS (16,5%)</td><td class="num">+ Gs. 660.000</td></tr>
+      <tr><td>Costo mensual para la empresa</td><td class="num"><strong>Gs. 4.660.000</strong></td></tr>
+    </table>
+    <p>A eso hay que sumarle, a lo largo del año, el aguinaldo (un doceavo de lo pagado) y las vacaciones.</p>
+  </div>
+
+  <h2>¿Qué otros descuentos puede tener el sueldo?</h2>
+  <p>Además del IPS, en el recibo de sueldo pueden aparecer otros descuentos, por ejemplo: anticipos de sueldo que ya cobraste, cuotas de préstamos que autorizaste a descontar, o descuentos ordenados por un juez. Todo descuento tiene que figurar detallado en la hoja de liquidación que te entrega tu empleador.</p>
+
+  <h2>¿El aguinaldo tiene descuento de IPS?</h2>
+  <p>No. El aguinaldo se cobra completo, sin el descuento del 9%. Podés ver más en nuestra <a href="/aguinaldo-paraguay">guía del aguinaldo</a>.</p>
+
+  <a class="boton" href="/#neto">Usar la calculadora de sueldo neto →</a>
+
+  <p class="aviso">Esta guía es informativa. Los porcentajes corresponden al régimen general del IPS; algunos regímenes especiales pueden tener tasas distintas.</p>
+
+
+  <footer>
+    <p><a href="/">Calculadora PY</a> · Calculadoras gratuitas de aguinaldo, IVA, sueldo neto y liquidación para Paraguay.</p>
+    <p><a href="/acerca">Acerca de</a> · <a href="/contacto">Contacto</a> · <a href="/privacidad">Política de privacidad</a></p>
+    <p>Los cálculos y guías son orientativos y no reemplazan el asesoramiento de un profesional.</p>
+  </footer>
+</div>
+</body>
+</html>
