@@ -21,6 +21,9 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9381811855445678"
      crossorigin="anonymous"></script>
 
+  <!-- ===== Umami: analítica sin cookies (visitas, origen, clics en botones) ===== -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="2a958994-8a11-45c2-8cab-b1cfe289ad1c"></script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
@@ -135,6 +138,47 @@
     details { border-bottom: 1px solid var(--borde); padding: .8rem 0; }
     summary { font-weight: 700; cursor: pointer; }
 
+    /* ===== Herramientas Pro ("puertas falsas" para medir interés antes de construir) ===== */
+    .pro { margin-top: 2.5rem; }
+    .pro h2 {
+      font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 600;
+      color: var(--verde-billete); font-size: 1.5rem; margin: 0 0 .25rem;
+    }
+    .pro > p { margin: 0 0 1rem; color: var(--gris); }
+    .pro-grilla { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: .75rem; }
+    .pro-grilla button, .boton-pro {
+      font: inherit; text-align: left; cursor: pointer; color: var(--tinta);
+      background: var(--panel); border: 1px solid var(--borde); border-radius: 1rem; padding: 1rem;
+    }
+    .pro-grilla button:hover { border-color: var(--verde-billete); }
+    .pro-grilla strong { display: block; color: var(--verde-billete); margin-bottom: .2rem; }
+    .pro-grilla span { font-size: .9rem; color: var(--gris); }
+    .etiqueta-pro {
+      display: inline-block; font-size: .7rem; font-weight: 700; letter-spacing: .05em;
+      background: var(--ambar); color: #1B1F1D; border-radius: 999px; padding: .1rem .5rem; margin-left: .3rem;
+      vertical-align: middle;
+    }
+    /* Botón Pro dentro del resultado (billete) */
+    .boton-pro {
+      margin-top: 1rem; width: 100%; text-align: center; font-weight: 700; position: relative; z-index: 1;
+      background: var(--papel); color: var(--verde-billete); border: none; padding: .7rem;
+    }
+
+    /* Ventana emergente de "próximamente" */
+    dialog {
+      border: none; border-radius: 1.25rem; padding: 1.5rem; max-width: 26rem; width: calc(100% - 2rem);
+      background: var(--panel); color: var(--tinta);
+    }
+    dialog::backdrop { background: rgba(0,0,0,.5); }
+    dialog h3 { font-family: "Bricolage Grotesque", system-ui, sans-serif; color: var(--verde-billete); margin: 0 0 .5rem; }
+    dialog .acciones { display: flex; gap: .5rem; justify-content: flex-end; }
+    dialog .acciones button {
+      font: inherit; font-weight: 700; padding: .6rem 1.1rem; border-radius: 999px; cursor: pointer;
+      border: 2px solid var(--verde-billete);
+    }
+    #pro-enviar { background: var(--verde-billete); color: var(--papel); }
+    #pro-cerrar { background: transparent; color: var(--verde-billete); }
+
     footer { margin: 3rem 0 2rem; font-size: .875rem; color: var(--gris); }
     footer a { color: var(--verde-billete); }
 
@@ -149,10 +193,10 @@
     <p>Aguinaldo, IVA y sueldo neto en guaraníes. Poné tus números y el resultado aparece al instante. Gratis y sin registrarte.</p>
 
     <div class="pestanas" role="tablist">
-      <button role="tab" aria-selected="true" data-calc="aguinaldo">Aguinaldo</button>
-      <button role="tab" aria-selected="false" data-calc="iva">IVA</button>
-      <button role="tab" aria-selected="false" data-calc="neto">Sueldo neto</button>
-      <button role="tab" aria-selected="false" data-calc="liquidacion">Liquidación</button>
+      <button role="tab" aria-selected="true" data-calc="aguinaldo" data-umami-event="pestana-aguinaldo">Aguinaldo</button>
+      <button role="tab" aria-selected="false" data-calc="iva" data-umami-event="pestana-iva">IVA</button>
+      <button role="tab" aria-selected="false" data-calc="neto" data-umami-event="pestana-neto">Sueldo neto</button>
+      <button role="tab" aria-selected="false" data-calc="liquidacion" data-umami-event="pestana-liquidacion">Liquidación</button>
     </div>
   </header>
 
@@ -282,8 +326,36 @@
           <div><span id="lq-dias-label">Días trabajados del mes</span><span id="lq-salario-mes">Gs. 0</span></div>
           <div class="nota" id="lq-nota"></div>
         </div>
+        <button class="boton-pro" data-pro="pdf-liquidacion">📄 Descargar liquidación en PDF <span class="etiqueta-pro">PRO</span></button>
       </div>
     </section>
+
+    <!-- ===== HERRAMIENTAS PRO: todavía no existen. Miden interés antes de construirlas. ===== -->
+    <section class="pro" aria-labelledby="pro-titulo">
+      <h2 id="pro-titulo">¿Tenés empleados? <span class="etiqueta-pro">PRO</span></h2>
+      <p>Herramientas para dueños de negocios y contadores.</p>
+      <div class="pro-grilla">
+        <button data-pro="recibo-pdf"><strong>📄 Recibos de sueldo en PDF</strong><span>Generá el recibo listo para firmar, con IPS y descuentos.</span></button>
+        <button data-pro="guardar-empleados"><strong>👥 Guardar mis empleados</strong><span>Cargá a tu personal una vez y calculá todo con un clic.</span></button>
+        <button data-pro="recordatorios"><strong>🔔 Recordatorios de pagos</strong><span>Aviso por email antes de pagar sueldos, IPS y aguinaldo.</span></button>
+        <button data-pro="planilla-mensual"><strong>🧾 Planilla mensual completa</strong><span>Sueldos, IPS y aguinaldo de todos tus empleados en una tabla.</span></button>
+      </div>
+    </section>
+
+    <!-- Ventana "próximamente": aparece al tocar cualquier botón Pro -->
+    <dialog id="pro-dialogo">
+      <form method="dialog" id="pro-form">
+        <h3>¡Estamos construyendo esto! 🚧</h3>
+        <p>Esta función todavía no está disponible. Dejá tu email y te avisamos apenas salga, con <strong>50% de descuento</strong> el primer mes.</p>
+        <label for="pro-email">Tu email</label>
+        <input id="pro-email" type="email" placeholder="tunombre@gmail.com" autocomplete="email">
+        <p class="ayuda" id="pro-gracias" hidden>¡Listo! Te vamos a avisar. 🙌</p>
+        <div class="acciones">
+          <button type="button" id="pro-cerrar">Cerrar</button>
+          <button type="button" id="pro-enviar">Avisame</button>
+        </div>
+      </form>
+    </dialog>
 
     <!-- ===== CONTENIDO EXPLICATIVO (ayuda al SEO y a la aprobación de AdSense) ===== -->
     <article>
@@ -564,6 +636,57 @@
     poner("lq-resultado", mostrarGs(total));
     poner("lq-nota", notas.join(" "));
   }
+
+  // ===== Puertas falsas: miden qué función Pro quiere la gente =====
+  // Cada clic se registra en Umami como evento "pro-clic" con el nombre de la función.
+  // Cuando exista el Google Form, pegar su URL acá para guardar los emails.
+  const FORM_EMAILS = ""; // ej: "https://docs.google.com/forms/d/e/XXXX/formResponse"
+  const FORM_CAMPO_EMAIL = ""; // ej: "entry.123456789"
+  const FORM_CAMPO_FUNCION = ""; // ej: "entry.987654321"
+
+  const proDialogo = document.getElementById("pro-dialogo");
+  const proEmail = document.getElementById("pro-email");
+  const proGracias = document.getElementById("pro-gracias");
+  let funcionElegida = "";
+
+  // Envía un evento a Umami (si el script todavía no cargó, no rompe nada)
+  function registrar(evento, datos) {
+    if (window.umami && typeof window.umami.track === "function") window.umami.track(evento, datos);
+  }
+
+  document.querySelectorAll("[data-pro]").forEach((boton) => {
+    boton.addEventListener("click", () => {
+      funcionElegida = boton.dataset.pro;
+      registrar("pro-clic", { funcion: funcionElegida });
+      proGracias.hidden = true;
+      proEmail.value = "";
+      proDialogo.showModal();
+    });
+  });
+
+  document.getElementById("pro-cerrar").addEventListener("click", () => proDialogo.close());
+
+  document.getElementById("pro-enviar").addEventListener("click", () => {
+    const email = proEmail.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      proEmail.focus();
+      proEmail.setCustomValidity("Escribí un email válido");
+      proEmail.reportValidity();
+      return;
+    }
+    proEmail.setCustomValidity("");
+    // A Umami solo va QUÉ función interesó, nunca el email (por privacidad)
+    registrar("pro-email", { funcion: funcionElegida });
+    // El email se guarda en el Google Form (cuando esté configurado)
+    if (FORM_EMAILS) {
+      const datos = new URLSearchParams();
+      datos.append(FORM_CAMPO_EMAIL, email);
+      datos.append(FORM_CAMPO_FUNCION, funcionElegida);
+      fetch(FORM_EMAILS, { method: "POST", mode: "no-cors", body: datos }).catch(() => {});
+    }
+    proGracias.hidden = false;
+    setTimeout(() => proDialogo.close(), 1800);
+  });
 
   // La fecha de salida arranca en el día de hoy
   const hoy = new Date();
