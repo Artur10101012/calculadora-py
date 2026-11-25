@@ -641,10 +641,8 @@
 
   // ===== Puertas falsas: miden qué función Pro quiere la gente =====
   // Cada clic se registra en Umami como evento "pro-clic" con el nombre de la función.
-  // Cuando exista el Google Form, pegar su URL acá para guardar los emails.
-  const FORM_EMAILS = ""; // ej: "https://docs.google.com/forms/d/e/XXXX/formResponse"
-  const FORM_CAMPO_EMAIL = ""; // ej: "entry.123456789"
-  const FORM_CAMPO_FUNCION = ""; // ej: "entry.987654321"
+  // Los emails de la lista de espera llegan a la bandeja de calculadorapy@gmail.com vía FormSubmit (gratis).
+  const FORM_EMAILS = "https://formsubmit.co/ajax/calculadorapy@gmail.com";
 
   const proDialogo = document.getElementById("pro-dialogo");
   const proEmail = document.getElementById("pro-email");
@@ -679,13 +677,18 @@
     proEmail.setCustomValidity("");
     // A Umami solo va QUÉ función interesó, nunca el email (por privacidad)
     registrar("pro-email", { funcion: funcionElegida });
-    // El email se guarda en el Google Form (cuando esté configurado)
-    if (FORM_EMAILS) {
-      const datos = new URLSearchParams();
-      datos.append(FORM_CAMPO_EMAIL, email);
-      datos.append(FORM_CAMPO_FUNCION, funcionElegida);
-      fetch(FORM_EMAILS, { method: "POST", mode: "no-cors", body: datos }).catch(() => {});
-    }
+    // El email llega como mensaje a calculadorapy@gmail.com
+    fetch(FORM_EMAILS, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        email: email,
+        funcion: funcionElegida,
+        _subject: "Nuevo interesado Pro: " + funcionElegida,
+        _template: "table",
+        _captcha: "false"
+      })
+    }).catch(() => {});
     proGracias.hidden = false;
     setTimeout(() => proDialogo.close(), 1800);
   });
