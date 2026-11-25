@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
   <!-- ===== SEO: esto es lo que Google muestra en los resultados ===== -->
-  <title>Calculadora de Aguinaldo, IVA y Sueldo Neto en Paraguay (2026)</title>
-  <meta name="description" content="Calculá gratis tu aguinaldo, el IVA del 10% y 5%, y tu sueldo neto con descuento de IPS en Paraguay. Resultados al instante en guaraníes.">
-  <meta name="keywords" content="calculadora aguinaldo paraguay, calcular iva paraguay, sueldo neto ips paraguay, aguinaldo 2026">
+  <title>Calculadora de Aguinaldo, IVA, Sueldo Neto y Liquidación en Paraguay (2026)</title>
+  <meta name="description" content="Calculá gratis tu aguinaldo, el IVA del 10% y 5%, tu sueldo neto con IPS y tu liquidación por despido o renuncia en Paraguay. Resultados al instante en guaraníes.">
+  <meta name="keywords" content="calculadora aguinaldo paraguay, calcular iva paraguay, sueldo neto ips paraguay, calculadora liquidacion paraguay, indemnizacion despido paraguay, aguinaldo 2026">
   <link rel="canonical" href="https://calculadorapy.com/">
 
   <!-- ===== Vista previa al compartir por WhatsApp o Facebook ===== -->
@@ -112,6 +112,13 @@
     .billete .detalle div { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
     /* El monto nunca se corta en dos líneas: "Gs." y el número quedan juntos */
     .billete .detalle span:last-child { white-space: nowrap; font-variant-numeric: tabular-nums; }
+    /* Avisos dentro del billete (por ejemplo: "con 10 años o más puede corresponder doble indemnización") */
+    .billete .nota { font-size: .85rem; margin-top: .8rem; padding: .5rem .7rem; border-radius: .5rem;
+      background: rgba(255,255,255,.12); }
+    .billete .nota:empty { display: none; }
+    /* Fila de checkbox: el checkbox no ocupa todo el ancho como los demás inputs */
+    .fila-check { display: flex; gap: .5rem; align-items: center; margin-bottom: 1rem; font-weight: 400; }
+    .fila-check input { width: auto; margin: 0; }
 
     /* ===== Espacios reservados para anuncios ===== */
     .anuncio {
@@ -145,6 +152,7 @@
       <button role="tab" aria-selected="true" data-calc="aguinaldo">Aguinaldo</button>
       <button role="tab" aria-selected="false" data-calc="iva">IVA</button>
       <button role="tab" aria-selected="false" data-calc="neto">Sueldo neto</button>
+      <button role="tab" aria-selected="false" data-calc="liquidacion">Liquidación</button>
     </div>
   </header>
 
@@ -223,6 +231,60 @@
       </div>
     </section>
 
+    <!-- ===== 4. CALCULADORA DE LIQUIDACIÓN FINAL (despido, renuncia) ===== -->
+    <section class="calc" id="liquidacion" hidden>
+      <div>
+        <label for="lq-sueldo">Sueldo mensual</label>
+        <span class="ayuda">Si tu sueldo varió, poné el promedio de los últimos 6 meses.</span>
+        <input id="lq-sueldo" inputmode="numeric" placeholder="3.044.000">
+
+        <label for="lq-ingreso">Fecha de ingreso</label>
+        <input id="lq-ingreso" type="date">
+
+        <label for="lq-salida">Fecha de salida</label>
+        <input id="lq-salida" type="date">
+
+        <label for="lq-motivo">¿Cómo terminó el trabajo?</label>
+        <select id="lq-motivo">
+          <option value="despido">Me despidieron sin justa causa</option>
+          <option value="renuncia">Renuncié</option>
+          <option value="justa">Me despidieron con justa causa</option>
+        </select>
+
+        <div id="lq-bloque-preaviso">
+          <label for="lq-preaviso">¿Te dieron preaviso?</label>
+          <select id="lq-preaviso">
+            <option value="no">No, me avisaron el mismo día</option>
+            <option value="si">Sí, trabajé el preaviso completo</option>
+          </select>
+        </div>
+
+        <label for="lq-vac-pendientes">Días de vacaciones pendientes</label>
+        <span class="ayuda">Vacaciones de años anteriores que nunca tomaste. Dejalo en 0 si no tenés.</span>
+        <input id="lq-vac-pendientes" type="number" min="0" max="90" value="0">
+
+        <label class="fila-check">
+          <input id="lq-dias-mes" type="checkbox" checked>
+          Todavía no me pagaron los días trabajados de este mes
+        </label>
+      </div>
+      <div class="billete" aria-live="polite">
+        <div>
+          <div>Tu liquidación (aprox.)</div>
+          <div class="monto" id="lq-resultado">Gs. 0</div>
+        </div>
+        <div class="detalle">
+          <div><span>Antigüedad</span><span id="lq-antiguedad">—</span></div>
+          <div><span>Indemnización (art. 91)</span><span id="lq-indemnizacion">Gs. 0</span></div>
+          <div><span id="lq-preaviso-label">Preaviso (art. 87)</span><span id="lq-preaviso-monto">Gs. 0</span></div>
+          <div><span id="lq-vac-label">Vacaciones</span><span id="lq-vacaciones">Gs. 0</span></div>
+          <div><span>Aguinaldo proporcional</span><span id="lq-aguinaldo">Gs. 0</span></div>
+          <div><span id="lq-dias-label">Días trabajados del mes</span><span id="lq-salario-mes">Gs. 0</span></div>
+          <div class="nota" id="lq-nota"></div>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== CONTENIDO EXPLICATIVO (ayuda al SEO y a la aprobación de AdSense) ===== -->
     <article>
       <h2>¿Cómo se calcula el aguinaldo en Paraguay?</h2>
@@ -234,7 +296,24 @@
       <h2>¿Cuánto descuenta el IPS del sueldo?</h2>
       <p>Si trabajás en relación de dependencia, el IPS te descuenta el 9% de tu sueldo bruto. Tu empleador aporta además un 16,5% por su cuenta, que no sale de tu bolsillo. Tu sueldo neto es lo que queda después de restar ese 9%.</p>
 
+      <h2>¿Cómo se calcula la liquidación por despido en Paraguay?</h2>
+      <p>Si te despiden sin justa causa, tu liquidación final suma varias partes. La indemnización es de 15 jornales (salarios diarios) por cada año trabajado, y una fracción de más de seis meses cuenta como un año entero (artículo 91 del Código del Trabajo). El jornal se calcula dividiendo el sueldo promedio de los últimos seis meses entre 30. Si no te dieron preaviso, también te deben pagar esos días: 30 si trabajaste menos de un año, 45 de uno a cinco años, 60 de cinco a diez años y 90 con más de diez (artículo 87). A eso se suman el aguinaldo proporcional del año, las vacaciones que no tomaste y los días trabajados del último mes.</p>
+
+      <h2>¿Qué cobro si renuncio?</h2>
+      <p>Si renunciás no te corresponde indemnización ni preaviso, pero sí el aguinaldo proporcional, las vacaciones ya ganadas que no tomaste y los días trabajados del mes. Ojo: al renunciar también tenés que avisar con anticipación a tu empleador. Si no lo hacés, la ley permite que te descuenten la mitad del preaviso.</p>
+
+      <h2>¿Cuántos días de vacaciones me corresponden?</h2>
+      <p>Según el artículo 218 del Código del Trabajo, después de cada año trabajado te corresponden 12 días hábiles corridos si tenés hasta 5 años de antigüedad, 18 días de 5 a 10 años, y 30 días con más de 10 años. Las vacaciones que ganaste y no tomaste se te pagan en dinero cuando termina el contrato.</p>
+
       <h2>Preguntas frecuentes</h2>
+      <details>
+        <summary>¿Qué pasa si tengo más de 10 años en la empresa?</summary>
+        <p>Con 10 años o más de antigüedad tenés estabilidad laboral: solo te pueden despedir por una causa justa probada ante un juez. Si te despiden sin probarla, podés pedir volver a tu puesto o cobrar el doble de la indemnización. En ese caso conviene consultar con un abogado laboralista o con el Ministerio de Trabajo.</p>
+      </details>
+      <details>
+        <summary>¿Cobro indemnización en el período de prueba?</summary>
+        <p>No. Durante el período de prueba (30 o 60 días según el tipo de trabajo), cualquiera de las partes puede terminar el contrato sin preaviso ni indemnización.</p>
+      </details>
       <details>
         <summary>¿El aguinaldo tiene descuento de IPS?</summary>
         <p>No. El aguinaldo no tiene descuento de IPS, por eso lo cobrás completo.</p>
@@ -338,7 +417,165 @@
     document.getElementById("neto-resultado").textContent = mostrarGs(bruto - ips);
   }
 
+  // ===== 4. Liquidación final (Código del Trabajo, Ley 213/93 modificada por Ley 496/95) =====
+  const lqSueldo = document.getElementById("lq-sueldo");
+  const lqIngreso = document.getElementById("lq-ingreso");
+  const lqSalida = document.getElementById("lq-salida");
+  const lqMotivo = document.getElementById("lq-motivo");
+  const lqPreaviso = document.getElementById("lq-preaviso");
+  const lqVacPendientes = document.getElementById("lq-vac-pendientes");
+  const lqDiasMes = document.getElementById("lq-dias-mes");
+
+  // Lee "2026-11-24" como {a: 2026, m: 11, d: 24} sin pasar por zonas horarias
+  function leerFecha(input) {
+    const partes = input.value.split("-").map(Number);
+    return partes.length === 3 && partes.every(Boolean) ? { a: partes[0], m: partes[1], d: partes[2] } : null;
+  }
+
+  // Cantidad de días del mes (mes de 1 a 12)
+  function diasDelMes(anio, mes) {
+    return new Date(anio, mes, 0).getDate();
+  }
+
+  // Antigüedad entre dos fechas en años, meses y días (como se cuenta en una liquidación)
+  function antiguedad(desde, hasta) {
+    let anios = hasta.a - desde.a;
+    let meses = hasta.m - desde.m;
+    let dias = hasta.d - desde.d;
+    if (dias < 0) {
+      meses--;
+      // Se "presta" la cantidad de días del mes anterior a la fecha de salida
+      const mesAnterior = hasta.m === 1 ? 12 : hasta.m - 1;
+      const anioAnterior = hasta.m === 1 ? hasta.a - 1 : hasta.a;
+      dias += diasDelMes(anioAnterior, mesAnterior);
+    }
+    if (meses < 0) {
+      anios--;
+      meses += 12;
+    }
+    return { anios, meses, dias };
+  }
+
+  // Días totales entre dos fechas (para detectar el período de prueba)
+  function diasEntre(desde, hasta) {
+    return Math.round((Date.UTC(hasta.a, hasta.m - 1, hasta.d) - Date.UTC(desde.a, desde.m - 1, desde.d)) / 86400000);
+  }
+
+  // Art. 87: días de preaviso según antigüedad
+  function diasPreaviso(aniosDecimales) {
+    if (aniosDecimales < 1) return 30;
+    if (aniosDecimales < 5) return 45;
+    if (aniosDecimales < 10) return 60;
+    return 90;
+  }
+
+  // Art. 218: días de vacaciones por año según antigüedad
+  function diasVacacionesPorAnio(aniosDecimales) {
+    if (aniosDecimales <= 5) return 12;
+    if (aniosDecimales <= 10) return 18;
+    return 30;
+  }
+
+  function textoAntiguedad(ant) {
+    const partes = [];
+    if (ant.anios) partes.push(ant.anios + (ant.anios === 1 ? " año" : " años"));
+    if (ant.meses) partes.push(ant.meses + (ant.meses === 1 ? " mes" : " meses"));
+    if (ant.dias || !partes.length) partes.push(ant.dias + (ant.dias === 1 ? " día" : " días"));
+    return partes.join(", ");
+  }
+
+  function calcularLiquidacion() {
+    const sueldo = leerGs(lqSueldo);
+    const ingreso = leerFecha(lqIngreso);
+    const salida = leerFecha(lqSalida);
+    const motivo = lqMotivo.value;
+    const notas = [];
+
+    // El preaviso solo se pregunta si el despido fue sin justa causa
+    document.getElementById("lq-bloque-preaviso").hidden = motivo !== "despido";
+
+    const poner = (id, texto) => (document.getElementById(id).textContent = texto);
+
+    if (!ingreso || !salida || diasEntre(ingreso, salida) < 0) {
+      poner("lq-antiguedad", "—");
+      ["lq-indemnizacion", "lq-preaviso-monto", "lq-vacaciones", "lq-aguinaldo", "lq-salario-mes", "lq-resultado"]
+        .forEach((id) => poner(id, mostrarGs(0)));
+      poner("lq-nota", ingreso && salida ? "La fecha de salida tiene que ser posterior a la de ingreso." : "");
+      return;
+    }
+
+    const jornal = sueldo / 30; // Salario diario: sueldo mensual dividido entre 30
+    const ant = antiguedad(ingreso, salida);
+    const aniosDecimales = ant.anios + ant.meses / 12 + ant.dias / 365;
+    const enPrueba = diasEntre(ingreso, salida) < 30; // Período de prueba mínimo (art. 60)
+
+    // --- Indemnización (art. 91): 15 jornales por año o fracción mayor a 6 meses ---
+    let aniosIndemnizables = ant.anios;
+    if (ant.meses > 6 || (ant.meses === 6 && ant.dias > 0)) aniosIndemnizables++;
+    let indemnizacion = 0;
+    if (motivo === "despido" && !enPrueba) indemnizacion = 15 * jornal * aniosIndemnizables;
+
+    // --- Preaviso (arts. 87 y 90): si no lo dieron, se paga en dinero ---
+    const diasPre = diasPreaviso(aniosDecimales);
+    let preaviso = 0;
+    if (motivo === "despido" && !enPrueba && lqPreaviso.value === "no") preaviso = diasPre * jornal;
+    poner("lq-preaviso-label", "Preaviso (" + diasPre + " días)");
+
+    // --- Vacaciones: las ya ganadas se pagan en dinero (art. 221) ---
+    // Si el despido es sin justa causa, sumamos también la parte proporcional del año en curso.
+    const diasVacAnio = diasVacacionesPorAnio(aniosDecimales);
+    const vacPendientes = Math.max(0, Number(lqVacPendientes.value) || 0);
+    let diasVacProporcionales = 0;
+    if (motivo === "despido" && !enPrueba) {
+      diasVacProporcionales = diasVacAnio * (ant.meses + ant.dias / 30) / 12;
+    }
+    const diasVacTotal = vacPendientes + diasVacProporcionales;
+    const vacaciones = diasVacTotal * jornal;
+    poner("lq-vac-label", "Vacaciones (" + diasVacTotal.toLocaleString("es-PY", { maximumFractionDigits: 1 }) + " días)");
+
+    // --- Aguinaldo proporcional: lo ganado este año dividido entre 12 ---
+    // Se cuenta desde el 1 de enero (o desde el ingreso, si entró este año) hasta la salida.
+    const inicioAnio = ingreso.a === salida.a ? ingreso : { a: salida.a, m: 1, d: 1 };
+    const antAnio = antiguedad(inicioAnio, salida);
+    const mesesAnio = Math.min(12, antAnio.anios * 12 + antAnio.meses + antAnio.dias / 30);
+    const aguinaldo = (sueldo * mesesAnio) / 12;
+
+    // --- Días trabajados del último mes que todavía no se cobraron ---
+    // Si entró en el mismo mes en que sale, solo cuentan los días desde su ingreso.
+    const mismoMes = ingreso.a === salida.a && ingreso.m === salida.m;
+    const diasDelUltimoMes = Math.min(mismoMes ? salida.d - ingreso.d + 1 : salida.d, 30);
+    const salarioMes = lqDiasMes.checked ? diasDelUltimoMes * jornal : 0;
+    poner("lq-dias-label", "Días trabajados del mes (" + (lqDiasMes.checked ? diasDelUltimoMes : 0) + ")");
+
+    const total = indemnizacion + preaviso + vacaciones + aguinaldo + salarioMes;
+
+    // --- Avisos según el caso ---
+    if (enPrueba) notas.push("Con menos de 30 días puede ser período de prueba: no corresponde indemnización ni preaviso.");
+    if (motivo === "despido" && ant.anios >= 10) notas.push("Con 10 años o más tenés estabilidad laboral: si te despiden sin causa probada, podés reclamar el reintegro o el doble de la indemnización. Consultá con un abogado.");
+    if (motivo === "renuncia") notas.push("Al renunciar no hay indemnización. Si no avisaste con anticipación, te pueden descontar la mitad del preaviso.");
+    if (motivo === "justa") notas.push("Con justa causa no corresponde indemnización ni preaviso, pero sí el aguinaldo, las vacaciones ganadas y los días trabajados.");
+
+    poner("lq-antiguedad", textoAntiguedad(ant));
+    poner("lq-indemnizacion", mostrarGs(indemnizacion));
+    poner("lq-preaviso-monto", mostrarGs(preaviso));
+    poner("lq-vacaciones", mostrarGs(vacaciones));
+    poner("lq-aguinaldo", mostrarGs(aguinaldo));
+    poner("lq-salario-mes", mostrarGs(salarioMes));
+    poner("lq-resultado", mostrarGs(total));
+    poner("lq-nota", notas.join(" "));
+  }
+
+  // La fecha de salida arranca en el día de hoy
+  const hoy = new Date();
+  lqSalida.value = hoy.getFullYear() + "-" + String(hoy.getMonth() + 1).padStart(2, "0") + "-" + String(hoy.getDate()).padStart(2, "0");
+
   // ===== Conectar cada campo con su cálculo =====
+  [lqSueldo, lqIngreso, lqSalida, lqMotivo, lqPreaviso, lqVacPendientes, lqDiasMes].forEach((el) => {
+    el.addEventListener("input", calcularLiquidacion);
+    el.addEventListener("change", calcularLiquidacion); // algunos navegadores solo avisan "change" en checkbox y fechas
+  });
+  autoFormatear(lqSueldo);
+  calcularLiquidacion();
   [agSueldo, agExtras, ivaMonto, netoBruto].forEach(autoFormatear);
   [agSueldo, agMeses, agExtras].forEach((el) => el.addEventListener("input", calcularAguinaldo));
   [ivaMonto, ivaTasa, ivaModo].forEach((el) => el.addEventListener("input", calcularIVA));
