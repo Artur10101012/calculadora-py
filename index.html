@@ -54,6 +54,8 @@
       --verde-claro: #1C2B25; --gris: #9AAAA2; --borde: #2E3D36; --panel: #16201C;
     }
     *, *::before, *::after { box-sizing: inherit; }
+    /* Lo oculto con "hidden" siempre queda oculto, aunque otra regla le ponga display */
+    [hidden] { display: none !important; }
     html { scroll-padding-top: env(safe-area-inset-top, 0px); }
     body {
       margin: 0; background: var(--papel); color: var(--tinta);
